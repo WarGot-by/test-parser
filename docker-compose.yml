@@ -1,0 +1,53 @@
+version: '3'
+services:
+    nginx:
+        container_name: nginx
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        restart: always
+        volumes:
+          - "/home/wargot/www/sociolog.local:/var/www/html/app.dmm.one"
+          - "/home/wargot/www/dmm.local:/var/www/html/dmm.one"
+          - "/home/wargot/www/shema.local:/var/www/html/shema.by"
+          - "/home/wargot/www/wargot.local:/var/www/html/wargot.com"
+          - "/home/wargot/www/polletoysru.local:/var/www/html/polletoys.ru:rw"
+          - "/home/wargot/www/shema2.local:/var/www/html/shema2.local"
+          - "./docker/nginx/sites:/etc/nginx/conf.d"
+          - "./docker/nginx/ssl:/etc/nginx/ssl"
+          - "/home/wargot/www/polletoysby.local/upload:/var/www/html/polletoys.by/"
+          - "/home/wargot/www/qr-menu.local:/var/www/html/qr-api.dmm.one"
+          - "/home/wargot/www/qr-menu-front.local:/var/www/html/qr-front.dmm.one"
+          - "/home/wargot/www/test.local:/var/www/html/test.local"
+          - "/home/wargot/www/sociolog.local:/var/www/html/smm.dmm.one"
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            -   php74
+
+    php74:
+        container_name: php7.4
+        build:
+            context: ./docker/php7.4
+            dockerfile: Dockerfile
+        restart: always
+        volumes:
+            - "./docker/php7.4:/usr/local/etc/php/"
+            - "/home/wargot/www/test.local:/var/www/html/test.local"
+
+    mariadb:
+      container_name: mariadatabase
+      build:
+        context: ./docker/mariadatabase
+        dockerfile: Dockerfile
+      restart: always
+      volumes:
+        - "./db:/var/lib/mysql:rw"
+      environment:
+        MYSQL_ROOT_PASSWORD: pass
+        MYSQL_PASSWORD: pass
+        MYSQL_USER: test
+        MYSQL_DATABASE: default
+      ports:
+        - "3306:3306"
