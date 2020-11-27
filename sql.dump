@@ -1,0 +1,11 @@
+﻿create table if not exists rbc_parser.news
+(
+    id       int auto_increment
+        primary key,
+    url_hash text     null,
+    content  longtext null,
+    img_url  text     null,
+    title    text     null
+)
+    collate = utf8mb4_unicode_ci;
+
